@@ -67,6 +67,14 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
 
+    set $laptopswitch "0:5:Lid_Switch"
+
+    bindswitch --reload --locked lid:on output $laptop disable
+    bindswitch --reload --locked lid:off output $laptop enable
+
+    exec_always ~/.config/sway/screen_toggle.sh
+
+
 
     input type:touchpad {
         dwt enabled
@@ -75,6 +83,25 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
         middle_emulation enabled
     }
 
+
+
+    set $volume_up pamixer -u -i 10
+    set $volume_down pamixer -d 10
+    set $toggle_mute pamixer -t
+    set $volume_changed_sound paplay /usr/share/sounds/freedesktop/stereo/audio-volume-change.oga
+    
+    bindsym XF86AudioRaiseVolume exec "$volume_up && $volume_changed_sound"
+    bindsym XF86AudioLowerVolume exec "$volume_down && $volume_changed_sound"
+    bindsym XF86AudioMute exec "$toggle_mute && sleep 0.3 && $volume_changed_sound"
+
+
+
+    set $brightness_up brightnessctl -c backlight set +5%
+    set $brightness_down brightnessctl -c backlight set 5%-
+
+    bindsym XF86MonBrightnessUp exec $brightness_up
+    bindsym XF86MonBrightnessDown exec $brightness_down
+    # bindsym Shift+XF86MonBrightnessUp exec brightnessctl -c backlight set 5%
 ### Key bindings
 #
 # Basics:
